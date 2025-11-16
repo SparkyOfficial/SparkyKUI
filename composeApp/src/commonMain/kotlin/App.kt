@@ -1,9 +1,9 @@
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import com.example.kmpapp.presentation.theme.AppTheme
 
 @Composable
 fun App() {
-    MaterialTheme {
+    AppTheme {
         // App content will be added in subsequent tasks
     }
 }
