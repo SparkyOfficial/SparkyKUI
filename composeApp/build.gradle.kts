@@ -39,6 +39,7 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.androidx.core.splashscreen)
             implementation(libs.koin.android)
             implementation(libs.kotlinx.coroutines.android)
         }
@@ -115,6 +116,21 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.example.kmpapp"
             packageVersion = "1.0.0"
+            
+            // Настройка иконки приложения
+            macOS {
+                iconFile.set(project.file("src/desktopMain/resources/icon.png"))
+            }
+            windows {
+                iconFile.set(project.file("src/desktopMain/resources/icon.png"))
+            }
+            linux {
+                iconFile.set(project.file("src/desktopMain/resources/icon.png"))
+            }
+            
+            // Описание приложения
+            description = "Kotlin Multiplatform приложение с современным UI"
+            vendor = "Example Company"
         }
     }
 }
