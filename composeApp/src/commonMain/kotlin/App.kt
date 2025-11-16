@@ -1,9 +1,11 @@
 import androidx.compose.runtime.Composable
 import com.example.kmpapp.presentation.theme.AppTheme
+import com.example.kmpapp.presentation.layout.AdaptiveLayoutDemo
 
 @Composable
 fun App() {
     AppTheme {
-        // App content will be added in subsequent tasks
+        // Demonstrating adaptive layout system
+        AdaptiveLayoutDemo()
     }
 }
