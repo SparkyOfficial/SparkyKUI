@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -34,6 +33,7 @@ import com.example.kmpapp.presentation.layout.getSpacing
 import com.example.kmpapp.presentation.layout.rememberWindowSize
 import com.example.kmpapp.presentation.viewmodels.HomeAction
 import com.example.kmpapp.presentation.viewmodels.HomeViewModel
+import org.koin.compose.koinInject
 
 /**
  * Главный экран приложения с приветствием и карточками информации
@@ -42,7 +42,7 @@ import com.example.kmpapp.presentation.viewmodels.HomeViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = remember { HomeViewModel() }
+    viewModel: HomeViewModel = koinInject()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val windowSize = rememberWindowSize()

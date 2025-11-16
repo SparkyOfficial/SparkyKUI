@@ -26,7 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -35,6 +34,7 @@ import com.example.kmpapp.presentation.layout.getContentPadding
 import com.example.kmpapp.presentation.layout.getSpacing
 import com.example.kmpapp.presentation.viewmodels.SettingsAction
 import com.example.kmpapp.presentation.viewmodels.SettingsViewModel
+import org.koin.compose.koinInject
 
 /**
  * Экран настроек приложения
@@ -45,7 +45,7 @@ import com.example.kmpapp.presentation.viewmodels.SettingsViewModel
  */
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel = remember { SettingsViewModel() },
+    viewModel: SettingsViewModel = koinInject(),
     onThemeChange: ((Boolean) -> Unit)? = null
 ) {
     val uiState by viewModel.uiState.collectAsState()
