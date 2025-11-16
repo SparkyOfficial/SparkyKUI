@@ -84,7 +84,8 @@ sealed class Screen(
         
         @Composable
         override fun Content() {
-            SettingsScreen()
+            val onThemeChange = LocalThemeChange.current
+            SettingsScreen(onThemeChange = onThemeChange)
         }
     }
 }
