@@ -1,5 +1,10 @@
 package com.example.kmpapp.presentation.layout
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -75,6 +80,7 @@ fun AdaptiveHorizontalSpacer(
 
 /**
  * Adaptive layout that switches between vertical and horizontal based on window size
+ * with smooth transitions when window size changes
  */
 @Composable
 fun AdaptiveLayout(
@@ -82,27 +88,37 @@ fun AdaptiveLayout(
     windowSize: WindowSize = rememberWindowSize(),
     content: @Composable (WindowSize) -> Unit
 ) {
-    when (windowSize) {
-        WindowSize.COMPACT -> {
-            // Vertical layout for mobile
-            Column(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(windowSize.getContentPadding()),
-                verticalArrangement = Arrangement.spacedBy(windowSize.getSpacing())
-            ) {
-                content(windowSize)
+    // Плавный переход при изменении размера окна
+    AnimatedContent(
+        targetState = windowSize,
+        transitionSpec = {
+            fadeIn(animationSpec = tween(300)) togetherWith
+            fadeOut(animationSpec = tween(300))
+        },
+        label = "adaptive_layout_transition"
+    ) { targetWindowSize ->
+        when (targetWindowSize) {
+            WindowSize.COMPACT -> {
+                // Vertical layout for mobile
+                Column(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(targetWindowSize.getContentPadding()),
+                    verticalArrangement = Arrangement.spacedBy(targetWindowSize.getSpacing())
+                ) {
+                    content(targetWindowSize)
+                }
             }
-        }
-        WindowSize.MEDIUM, WindowSize.EXPANDED -> {
-            // Horizontal layout for tablets and desktop
-            Row(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(windowSize.getContentPadding()),
-                horizontalArrangement = Arrangement.spacedBy(windowSize.getSpacing())
-            ) {
-                content(windowSize)
+            WindowSize.MEDIUM, WindowSize.EXPANDED -> {
+                // Horizontal layout for tablets and desktop
+                Row(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(targetWindowSize.getContentPadding()),
+                    horizontalArrangement = Arrangement.spacedBy(targetWindowSize.getSpacing())
+                ) {
+                    content(targetWindowSize)
+                }
             }
         }
     }
