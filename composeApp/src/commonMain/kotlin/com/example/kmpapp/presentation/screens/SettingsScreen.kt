@@ -12,9 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -183,7 +182,7 @@ private fun ThemeSettingItem(
             modifier = Modifier.weight(1f)
         ) {
             Icon(
-                imageVector = if (isDarkTheme) Icons.Default.DarkMode else Icons.Default.LightMode,
+                imageVector = Icons.Default.Star,
                 contentDescription = null,
                 tint = iconColor
             )

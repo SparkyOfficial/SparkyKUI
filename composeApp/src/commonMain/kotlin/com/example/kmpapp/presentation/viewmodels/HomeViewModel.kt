@@ -1,9 +1,9 @@
 package com.example.kmpapp.presentation.viewmodels
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.filled.Palette
-import androidx.compose.material.icons.filled.PhoneAndroid
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.kmpapp.domain.error.AppError
@@ -55,19 +55,19 @@ class HomeViewModel {
             id = "multiplatform",
             title = "Kotlin Multiplatform",
             description = "Единая кодовая база для всех платформ",
-            icon = Icons.Default.Code
+            icon = Icons.Default.Build
         ),
         CardData(
             id = "compose",
             title = "Compose Multiplatform",
             description = "Современный декларативный UI фреймворк",
-            icon = Icons.Default.Palette
+            icon = Icons.Default.Favorite
         ),
         CardData(
             id = "adaptive",
             title = "Адаптивный дизайн",
             description = "Автоматическая адаптация под размер экрана",
-            icon = Icons.Default.PhoneAndroid
+            icon = Icons.Default.Phone
         ),
         CardData(
             id = "material3",
