@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -48,6 +49,10 @@ fun HomeScreen(
     val uiState by viewModel.uiState.collectAsState()
     val windowSize = rememberWindowSize()
     
+    // Оптимизация: используем remember для вычисления padding и spacing
+    val contentPadding = remember(windowSize) { windowSize.getContentPadding() }
+    val spacing = remember(windowSize) { windowSize.getSpacing() }
+    
     // Pull-to-refresh state
     val pullToRefreshState = rememberPullToRefreshState()
     
@@ -73,7 +78,7 @@ fun HomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(windowSize.getContentPadding()),
+                .padding(contentPadding),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
@@ -92,7 +97,7 @@ fun HomeScreen(
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
             )
             
-            Spacer(modifier = Modifier.height(windowSize.getSpacing() * 2))
+            Spacer(modifier = Modifier.height(spacing * 2))
             
             // Адаптивная сетка карточек
             AdaptiveCardGrid(
@@ -129,17 +134,25 @@ private fun AdaptiveCardGrid(
     onCardClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val columns = windowSize.getGridColumns()
-    val spacing = windowSize.getSpacing()
+    // Оптимизация: используем remember для вычисления columns и spacing
+    val columns = remember(windowSize) { windowSize.getGridColumns() }
+    val spacing = remember(windowSize) { windowSize.getSpacing() }
+    
+    // Оптимизация: используем remember для contentPadding
+    val contentPadding = remember(spacing) { PaddingValues(vertical = spacing) }
     
     LazyVerticalGrid(
         columns = GridCells.Fixed(columns),
         modifier = modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(vertical = spacing),
+        contentPadding = contentPadding,
         horizontalArrangement = Arrangement.spacedBy(spacing),
         verticalArrangement = Arrangement.spacedBy(spacing)
     ) {
-        items(cards) { card ->
+        // Оптимизация: используем key для стабильной идентификации элементов
+        items(
+            items = cards,
+            key = { card -> card.id }
+        ) { card ->
             InfoCard(
                 title = card.title,
                 description = card.description,

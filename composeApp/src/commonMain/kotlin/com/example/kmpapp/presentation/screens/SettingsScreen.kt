@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -52,13 +53,17 @@ fun SettingsScreen(
     val uiState by viewModel.uiState.collectAsState()
     val windowSize = rememberWindowSize()
     
+    // Оптимизация: используем remember для вычисления padding и spacing
+    val contentPadding = remember(windowSize) { windowSize.getContentPadding() }
+    val spacing = remember(windowSize) { windowSize.getSpacing() }
+    
     androidx.compose.foundation.layout.Box(
         modifier = Modifier.fillMaxSize()
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(windowSize.getContentPadding()),
+                .padding(contentPadding),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
@@ -77,7 +82,7 @@ fun SettingsScreen(
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
         )
         
-        Spacer(modifier = Modifier.height(windowSize.getSpacing() * 2))
+        Spacer(modifier = Modifier.height(spacing * 2))
         
         // Секция настроек темы
         SettingsSection(
@@ -92,7 +97,7 @@ fun SettingsScreen(
             )
         }
         
-        Spacer(modifier = Modifier.height(windowSize.getSpacing()))
+        Spacer(modifier = Modifier.height(spacing))
         
         // Секция "О приложении"
         SettingsSection(

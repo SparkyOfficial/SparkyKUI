@@ -17,13 +17,17 @@ import com.example.kmpapp.presentation.components.InfoCard
 
 @Composable
 fun ComponentsScreen() {
+    // Оптимизация: используем remember для contentPadding
+    val contentPadding = remember { PaddingValues(16.dp) }
+    val verticalSpacing = remember { 24.dp }
+    
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = contentPadding,
+        verticalArrangement = Arrangement.spacedBy(verticalSpacing)
     ) {
-        item {
+        // Оптимизация: используем key для стабильной идентификации секций
+        item(key = "header") {
             Text(
                 text = "Компоненты",
                 style = MaterialTheme.typography.displayMedium,
@@ -37,19 +41,23 @@ fun ComponentsScreen() {
             )
         }
         
-        item { ButtonsSection() }
-        item { TextFieldsSection() }
-        item { SwitchesAndCheckboxesSection() }
-        item { SlidersSection() }
-        item { CardsSection() }
+        item(key = "buttons") { ButtonsSection() }
+        item(key = "textfields") { TextFieldsSection() }
+        item(key = "switches") { SwitchesAndCheckboxesSection() }
+        item(key = "sliders") { SlidersSection() }
+        item(key = "cards") { CardsSection() }
     }
 }
 
 @Composable
 private fun ButtonsSection() {
+    // Оптимизация: используем remember для spacing
+    val sectionSpacing = remember { 12.dp }
+    val buttonSpacing = remember { 8.dp }
+    
     ComponentSection(title = "Кнопки") {
         Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(sectionSpacing)
         ) {
             Text(
                 text = "Filled Buttons",
@@ -57,7 +65,7 @@ private fun ButtonsSection() {
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(buttonSpacing),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppButton(
@@ -73,7 +81,7 @@ private fun ButtonsSection() {
                 )
             }
             
-            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = buttonSpacing))
             
             Text(
                 text = "Outlined Buttons",
@@ -81,7 +89,7 @@ private fun ButtonsSection() {
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(buttonSpacing),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppButton(
@@ -97,7 +105,7 @@ private fun ButtonsSection() {
                 )
             }
             
-            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = buttonSpacing))
             
             Text(
                 text = "Text Buttons",
@@ -105,7 +113,7 @@ private fun ButtonsSection() {
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(buttonSpacing),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppButton(
@@ -121,7 +129,7 @@ private fun ButtonsSection() {
                 )
             }
             
-            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = buttonSpacing))
             
             Text(
                 text = "Icon Buttons",
@@ -129,7 +137,7 @@ private fun ButtonsSection() {
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(buttonSpacing)
             ) {
                 IconButton(onClick = {}) {
                     Icon(Icons.Default.Home, contentDescription = "Home")
@@ -161,9 +169,12 @@ private fun TextFieldsSection() {
     var passwordValue by remember { mutableStateOf("") }
     var emailError by remember { mutableStateOf(false) }
     
+    // Оптимизация: используем remember для spacing
+    val fieldSpacing = remember { 12.dp }
+    
     ComponentSection(title = "Текстовые поля") {
         Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(fieldSpacing)
         ) {
             OutlinedTextField(
                 value = textValue,
@@ -219,6 +230,10 @@ private fun SwitchesAndCheckboxesSection() {
     var checkbox1Checked by remember { mutableStateOf(false) }
     var checkbox2Checked by remember { mutableStateOf(true) }
     var checkbox3Checked by remember { mutableStateOf(false) }
+    var selectedOption by remember { mutableStateOf(0) }
+    
+    // Оптимизация: используем remember для списка опций
+    val radioOptions = remember { listOf("Вариант 1", "Вариант 2", "Вариант 3") }
     
     ComponentSection(title = "Переключатели и чекбоксы") {
         Column(
@@ -291,19 +306,20 @@ private fun SwitchesAndCheckboxesSection() {
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             
-            var selectedOption by remember { mutableStateOf(0) }
-            
             Column {
-                listOf("Вариант 1", "Вариант 2", "Вариант 3").forEachIndexed { index, text ->
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        RadioButton(
-                            selected = selectedOption == index,
-                            onClick = { selectedOption = index }
-                        )
-                        Text(text, modifier = Modifier.padding(start = 8.dp))
+                // Оптимизация: используем key для стабильной идентификации radio buttons
+                radioOptions.forEachIndexed { index, text ->
+                    key(index) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            RadioButton(
+                                selected = selectedOption == index,
+                                onClick = { selectedOption = index }
+                            )
+                            Text(text, modifier = Modifier.padding(start = 8.dp))
+                        }
                     }
                 }
             }
@@ -316,9 +332,12 @@ private fun SlidersSection() {
     var sliderValue by remember { mutableStateOf(0.5f) }
     var discreteSliderValue by remember { mutableStateOf(3f) }
     
+    // Оптимизация: используем remember для spacing
+    val sliderSpacing = remember { 16.dp }
+    
     ComponentSection(title = "Слайдеры") {
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(sliderSpacing)
         ) {
             Column {
                 Text(
@@ -365,9 +384,12 @@ private fun SlidersSection() {
 
 @Composable
 private fun CardsSection() {
+    // Оптимизация: используем remember для spacing
+    val cardSpacing = remember { 12.dp }
+    
     ComponentSection(title = "Карточки") {
         Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(cardSpacing)
         ) {
             InfoCard(
                 title = "Информационная карточка",

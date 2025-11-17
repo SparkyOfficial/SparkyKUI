@@ -23,7 +23,9 @@ fun AppNavigation(
     onThemeChange: (Boolean) -> Unit
 ) {
     val windowSize = rememberWindowSize()
-    val tabs = listOf(Screen.Home, Screen.Components, Screen.Settings)
+    
+    // Оптимизация: используем remember для списка tabs
+    val tabs = remember { listOf(Screen.Home, Screen.Components, Screen.Settings) }
     
     CompositionLocalProvider(LocalThemeChange provides onThemeChange) {
         TabNavigator(Screen.Home) {

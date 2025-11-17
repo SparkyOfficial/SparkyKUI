@@ -48,16 +48,21 @@ fun AppButton(
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
     
+    // Оптимизация: используем remember для animationSpec
+    val animationSpec = remember { tween<Float>(durationMillis = 150) }
+    
     // Анимация масштаба при hover (для десктопа)
     val scale by animateFloatAsState(
         targetValue = if (isHovered && enabled) 1.02f else 1f,
-        animationSpec = tween(durationMillis = 150),
+        animationSpec = animationSpec,
         label = "button_scale"
     )
     
-    val buttonModifier = modifier
-        .scale(scale)
-        .hoverable(interactionSource = interactionSource)
+    // Оптимизация: используем remember для buttonModifier
+    val buttonModifier = remember(scale) {
+        modifier
+            .scale(scale)
+    }.hoverable(interactionSource = interactionSource)
     
     when (style) {
         AppButtonStyle.Filled -> {

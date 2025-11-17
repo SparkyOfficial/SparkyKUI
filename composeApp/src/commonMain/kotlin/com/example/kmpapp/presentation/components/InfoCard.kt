@@ -52,17 +52,22 @@ fun InfoCard(
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
     
+    // Оптимизация: используем remember для animationSpec
+    val animationSpec = remember { tween<Float>(durationMillis = 200) }
+    val dpAnimationSpec = remember { tween<androidx.compose.ui.unit.Dp>(durationMillis = 200) }
+    val colorAnimationSpec = remember { tween<androidx.compose.ui.graphics.Color>(durationMillis = 200) }
+    
     // Анимация elevation при hover
     val elevation by animateDpAsState(
         targetValue = if (isHovered) 8.dp else 2.dp,
-        animationSpec = tween(durationMillis = 200),
+        animationSpec = dpAnimationSpec,
         label = "card_elevation"
     )
     
     // Анимация масштаба при hover
     val scale by animateFloatAsState(
         targetValue = if (isHovered) 1.02f else 1f,
-        animationSpec = tween(durationMillis = 200),
+        animationSpec = animationSpec,
         label = "card_scale"
     )
     
@@ -72,7 +77,7 @@ fun InfoCard(
             MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f)
         else 
             MaterialTheme.colorScheme.surfaceVariant,
-        animationSpec = tween(durationMillis = 200),
+        animationSpec = colorAnimationSpec,
         label = "card_color"
     )
     

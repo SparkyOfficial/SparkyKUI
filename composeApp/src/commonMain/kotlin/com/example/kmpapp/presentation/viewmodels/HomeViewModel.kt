@@ -48,6 +48,34 @@ sealed class HomeAction {
 class HomeViewModel {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+    
+    // Оптимизация: создаем неизменяемый список карточек один раз
+    private val defaultCards = listOf(
+        CardData(
+            id = "multiplatform",
+            title = "Kotlin Multiplatform",
+            description = "Единая кодовая база для всех платформ",
+            icon = Icons.Default.Code
+        ),
+        CardData(
+            id = "compose",
+            title = "Compose Multiplatform",
+            description = "Современный декларативный UI фреймворк",
+            icon = Icons.Default.Palette
+        ),
+        CardData(
+            id = "adaptive",
+            title = "Адаптивный дизайн",
+            description = "Автоматическая адаптация под размер экрана",
+            icon = Icons.Default.PhoneAndroid
+        ),
+        CardData(
+            id = "material3",
+            title = "Material Design 3",
+            description = "Современные компоненты и темы",
+            icon = Icons.Default.Settings
+        )
+    )
 
     init {
         loadInitialData()
@@ -88,34 +116,8 @@ class HomeViewModel {
         try {
             _uiState.update { it.copy(isLoading = true, error = null) }
             
-            val cards = listOf(
-                CardData(
-                    id = "multiplatform",
-                    title = "Kotlin Multiplatform",
-                    description = "Единая кодовая база для всех платформ",
-                    icon = Icons.Default.Code
-                ),
-                CardData(
-                    id = "compose",
-                    title = "Compose Multiplatform",
-                    description = "Современный декларативный UI фреймворк",
-                    icon = Icons.Default.Palette
-                ),
-                CardData(
-                    id = "adaptive",
-                    title = "Адаптивный дизайн",
-                    description = "Автоматическая адаптация под размер экрана",
-                    icon = Icons.Default.PhoneAndroid
-                ),
-                CardData(
-                    id = "material3",
-                    title = "Material Design 3",
-                    description = "Современные компоненты и темы",
-                    icon = Icons.Default.Settings
-                )
-            )
-
-            _uiState.update { it.copy(cards = cards, isLoading = false) }
+            // Оптимизация: используем предварительно созданный список
+            _uiState.update { it.copy(cards = defaultCards, isLoading = false) }
         } catch (e: Exception) {
             handleError(AppError.UnknownError(e))
         }
