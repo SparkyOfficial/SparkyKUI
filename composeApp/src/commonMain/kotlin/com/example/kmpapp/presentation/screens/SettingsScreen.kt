@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.kmpapp.presentation.components.ErrorHandler
 import com.example.kmpapp.presentation.layout.rememberWindowSize
 import com.example.kmpapp.presentation.layout.getContentPadding
 import com.example.kmpapp.presentation.layout.getSpacing
@@ -51,13 +52,16 @@ fun SettingsScreen(
     val uiState by viewModel.uiState.collectAsState()
     val windowSize = rememberWindowSize()
     
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(windowSize.getContentPadding()),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top
+    androidx.compose.foundation.layout.Box(
+        modifier = Modifier.fillMaxSize()
     ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(windowSize.getContentPadding()),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top
+        ) {
         // Заголовок
         Text(
             text = "Настройки",
@@ -99,6 +103,14 @@ fun SettingsScreen(
                 appVersion = uiState.appVersion
             )
         }
+        }
+        
+        // Обработчик ошибок
+        ErrorHandler(
+            error = uiState.error,
+            onDismiss = { viewModel.clearError() },
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }
 

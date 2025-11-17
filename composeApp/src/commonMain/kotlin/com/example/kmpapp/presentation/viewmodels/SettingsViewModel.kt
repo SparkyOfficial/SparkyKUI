@@ -1,5 +1,6 @@
 package com.example.kmpapp.presentation.viewmodels
 
+import com.example.kmpapp.domain.error.AppError
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,7 +12,8 @@ import kotlinx.coroutines.flow.update
 data class SettingsUiState(
     val isDarkTheme: Boolean = false,
     val appVersion: String = "1.0.0",
-    val appName: String = "Kotlin Multiplatform App"
+    val appName: String = "Kotlin Multiplatform App",
+    val error: AppError? = null
 )
 
 /**
@@ -42,8 +44,12 @@ class SettingsViewModel {
      * Обработка действий пользователя
      */
     fun onAction(action: SettingsAction) {
-        when (action) {
-            is SettingsAction.ToggleTheme -> toggleTheme()
+        try {
+            when (action) {
+                is SettingsAction.ToggleTheme -> toggleTheme()
+            }
+        } catch (e: Exception) {
+            handleError(AppError.UnknownError(e))
         }
     }
     
@@ -51,8 +57,26 @@ class SettingsViewModel {
      * Переключение темы между светлой и темной
      */
     fun toggleTheme() {
-        _uiState.update { currentState ->
-            currentState.copy(isDarkTheme = !currentState.isDarkTheme)
+        try {
+            _uiState.update { currentState ->
+                currentState.copy(isDarkTheme = !currentState.isDarkTheme, error = null)
+            }
+        } catch (e: Exception) {
+            handleError(AppError.UnknownError(e))
         }
+    }
+    
+    /**
+     * Очистка ошибки
+     */
+    fun clearError() {
+        _uiState.update { it.copy(error = null) }
+    }
+    
+    /**
+     * Обработка ошибки
+     */
+    private fun handleError(error: AppError) {
+        _uiState.update { it.copy(error = error) }
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.PhoneAndroid
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.kmpapp.domain.error.AppError
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,7 +30,8 @@ data class HomeUiState(
     val isLoading: Boolean = false,
     val cards: List<CardData> = emptyList(),
     val selectedCardId: String? = null,
-    val isRefreshing: Boolean = false
+    val isRefreshing: Boolean = false,
+    val error: AppError? = null
 )
 
 /**
@@ -55,44 +57,68 @@ class HomeViewModel {
      * Обработка действий пользователя
      */
     fun onAction(action: HomeAction) {
-        when (action) {
-            is HomeAction.CardClicked -> handleCardClick(action.cardId)
-            is HomeAction.RefreshData -> refreshData()
+        try {
+            when (action) {
+                is HomeAction.CardClicked -> handleCardClick(action.cardId)
+                is HomeAction.RefreshData -> refreshData()
+            }
+        } catch (e: Exception) {
+            handleError(AppError.UnknownError(e))
         }
+    }
+    
+    /**
+     * Очистка ошибки
+     */
+    fun clearError() {
+        _uiState.update { it.copy(error = null) }
+    }
+    
+    /**
+     * Обработка ошибки
+     */
+    private fun handleError(error: AppError) {
+        _uiState.update { it.copy(error = error, isLoading = false, isRefreshing = false) }
     }
 
     /**
      * Загрузка начальных данных
      */
     private fun loadInitialData() {
-        val cards = listOf(
-            CardData(
-                id = "multiplatform",
-                title = "Kotlin Multiplatform",
-                description = "Единая кодовая база для всех платформ",
-                icon = Icons.Default.Code
-            ),
-            CardData(
-                id = "compose",
-                title = "Compose Multiplatform",
-                description = "Современный декларативный UI фреймворк",
-                icon = Icons.Default.Palette
-            ),
-            CardData(
-                id = "adaptive",
-                title = "Адаптивный дизайн",
-                description = "Автоматическая адаптация под размер экрана",
-                icon = Icons.Default.PhoneAndroid
-            ),
-            CardData(
-                id = "material3",
-                title = "Material Design 3",
-                description = "Современные компоненты и темы",
-                icon = Icons.Default.Settings
+        try {
+            _uiState.update { it.copy(isLoading = true, error = null) }
+            
+            val cards = listOf(
+                CardData(
+                    id = "multiplatform",
+                    title = "Kotlin Multiplatform",
+                    description = "Единая кодовая база для всех платформ",
+                    icon = Icons.Default.Code
+                ),
+                CardData(
+                    id = "compose",
+                    title = "Compose Multiplatform",
+                    description = "Современный декларативный UI фреймворк",
+                    icon = Icons.Default.Palette
+                ),
+                CardData(
+                    id = "adaptive",
+                    title = "Адаптивный дизайн",
+                    description = "Автоматическая адаптация под размер экрана",
+                    icon = Icons.Default.PhoneAndroid
+                ),
+                CardData(
+                    id = "material3",
+                    title = "Material Design 3",
+                    description = "Современные компоненты и темы",
+                    icon = Icons.Default.Settings
+                )
             )
-        )
 
-        _uiState.update { it.copy(cards = cards) }
+            _uiState.update { it.copy(cards = cards, isLoading = false) }
+        } catch (e: Exception) {
+            handleError(AppError.UnknownError(e))
+        }
     }
 
     /**
@@ -106,12 +132,16 @@ class HomeViewModel {
      * Обновление данных (pull-to-refresh)
      */
     private fun refreshData() {
-        _uiState.update { it.copy(isRefreshing = true) }
-        
-        // Симуляция загрузки данных
-        // В реальном приложении здесь был бы вызов репозитория
-        loadInitialData()
-        
-        _uiState.update { it.copy(isRefreshing = false) }
+        try {
+            _uiState.update { it.copy(isRefreshing = true, error = null) }
+            
+            // Симуляция загрузки данных
+            // В реальном приложении здесь был бы вызов репозитория
+            loadInitialData()
+            
+            _uiState.update { it.copy(isRefreshing = false) }
+        } catch (e: Exception) {
+            handleError(AppError.UnknownError(e))
+        }
     }
 }

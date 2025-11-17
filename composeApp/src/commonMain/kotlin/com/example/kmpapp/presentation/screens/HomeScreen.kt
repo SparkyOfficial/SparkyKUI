@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
+import com.example.kmpapp.presentation.components.ErrorHandler
 import com.example.kmpapp.presentation.components.InfoCard
 import com.example.kmpapp.presentation.layout.WindowSize
 import com.example.kmpapp.presentation.layout.getContentPadding
@@ -107,6 +108,13 @@ fun HomeScreen(
         PullToRefreshContainer(
             state = pullToRefreshState,
             modifier = Modifier.align(Alignment.TopCenter)
+        )
+        
+        // Обработчик ошибок
+        ErrorHandler(
+            error = uiState.error,
+            onDismiss = { viewModel.clearError() },
+            modifier = Modifier.align(Alignment.BottomCenter)
         )
     }
 }
