@@ -27,13 +27,14 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Кастомная кнопка приложения с поддержкой различных стилей и иконок
+ * Кастомна кнопка застосунку з підтримкою різних стилів та іконок
  * 
- * @param text Текст кнопки
- * @param onClick Обработчик нажатия
- * @param modifier Модификатор для кастомизации
- * @param icon Опциональная иконка
- * @param enabled Состояние активности кнопки
- * @param style Стиль кнопки (Filled, Outlined, Text, Tonal)
+ * @param text Текст кнопки / Текст кнопки
+ * @param onClick Обработчик нажатия / Обробник натискання
+ * @param modifier Модификатор для кастомизации / Модифікатор для кастомізації
+ * @param icon Опциональная иконка / Опціональна іконка
+ * @param enabled Состояние активности кнопки / Стан активності кнопки
+ * @param style Стиль кнопки (Filled, Outlined, Text, Tonal) / Стиль кнопки (Filled, Outlined, Text, Tonal)
  */
 @Composable
 fun AppButton(
@@ -45,13 +46,16 @@ fun AppButton(
     style: AppButtonStyle = AppButtonStyle.Filled
 ) {
     // Создаем interaction source для отслеживания hover состояния
+    // Створюємо interaction source для відстеження hover стану
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
     
     // Оптимизация: используем remember для animationSpec
+    // Оптимізація: використовуємо remember для animationSpec
     val animationSpec = remember { tween<Float>(durationMillis = 150) }
     
     // Анимация масштаба при hover (для десктопа)
+    // Анімація масштабу при hover (для десктопу)
     val scale by animateFloatAsState(
         targetValue = if (isHovered && enabled) 1.02f else 1f,
         animationSpec = animationSpec,
@@ -59,6 +63,7 @@ fun AppButton(
     )
     
     // Оптимизация: используем remember для buttonModifier
+    // Оптимізація: використовуємо remember для buttonModifier
     val buttonModifier = remember(scale) {
         modifier
             .scale(scale)
@@ -126,10 +131,11 @@ private fun ButtonContent(
 
 /**
  * Стили кнопок приложения
+ * Стилі кнопок застосунку
  */
 enum class AppButtonStyle {
-    Filled,    // Заполненная кнопка (по умолчанию)
-    Outlined,  // Кнопка с обводкой
-    Text,      // Текстовая кнопка
-    Tonal      // Тональная кнопка
+    Filled,    // Заполненная кнопка (по умолчанию) / Заповнена кнопка (за замовчуванням)
+    Outlined,  // Кнопка с обводкой / Кнопка з обведенням
+    Text,      // Текстовая кнопка / Текстова кнопка
+    Tonal      // Тональная кнопка / Тональна кнопка
 }

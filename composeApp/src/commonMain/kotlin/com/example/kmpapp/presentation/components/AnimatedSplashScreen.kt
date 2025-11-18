@@ -18,9 +18,11 @@ import androidx.compose.ui.text.font.FontWeight
 
 /**
  * Анимированный splash screen с плавным появлением
+ * Анімований splash screen з плавною появою
  * Используется для украшения при запуске приложения
+ * Використовується для прикраси при запуску застосунку
  * 
- * @param onSplashFinished Callback, вызываемый после завершения анимации
+ * @param onSplashFinished Callback, вызываемый после завершения анимации / Callback, що викликається після завершення анімації
  */
 @Composable
 fun AnimatedSplashScreen(
@@ -31,6 +33,7 @@ fun AnimatedSplashScreen(
     
     LaunchedEffect(Unit) {
         // Анимация масштаба и прозрачности
+        // Анімація масштабу та прозорості
         scale.animateTo(
             targetValue = 1f,
             animationSpec = tween(durationMillis = 800)
@@ -41,9 +44,11 @@ fun AnimatedSplashScreen(
         )
         
         // Задержка перед переходом к основному контенту
+        // Затримка перед переходом до основного контенту
         kotlinx.coroutines.delay(1500)
         
         // Плавное исчезновение
+        // Плавне зникнення
         alpha.animateTo(
             targetValue = 0f,
             animationSpec = tween(durationMillis = 400)

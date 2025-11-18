@@ -13,11 +13,13 @@ import com.example.kmpapp.domain.error.AppError
 
 /**
  * Компонент для отображения ошибок через Snackbar
+ * Компонент для відображення помилок через Snackbar
  * Автоматически показывает Snackbar при появлении ошибки
+ * Автоматично показує Snackbar при появі помилки
  * 
- * @param error Текущая ошибка для отображения (null если ошибок нет)
- * @param onDismiss Callback для закрытия ошибки
- * @param modifier Модификатор для кастомизации
+ * @param error Текущая ошибка для отображения (null если ошибок нет) / Поточна помилка для відображення (null якщо помилок немає)
+ * @param onDismiss Callback для закрытия ошибки / Callback для закриття помилки
+ * @param modifier Модификатор для кастомизации / Модифікатор для кастомізації
  */
 @Composable
 fun ErrorHandler(
@@ -28,6 +30,7 @@ fun ErrorHandler(
     val snackbarHostState = remember { SnackbarHostState() }
     
     // Показываем Snackbar при появлении ошибки
+    // Показуємо Snackbar при появі помилки
     LaunchedEffect(error) {
         error?.let {
             snackbarHostState.showSnackbar(

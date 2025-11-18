@@ -15,6 +15,7 @@ import com.example.kmpapp.presentation.layout.rememberWindowSize
 
 /**
  * CompositionLocal для передачи callback изменения темы вниз по дереву композиции
+ * CompositionLocal для передачі callback зміни теми вниз по дереву композиції
  */
 val LocalThemeChange = compositionLocalOf<((Boolean) -> Unit)?> { null }
 
@@ -25,6 +26,7 @@ fun AppNavigation(
     val windowSize = rememberWindowSize()
     
     // Оптимизация: используем remember для списка tabs
+    // Оптимізація: використовуємо remember для списку tabs
     val tabs = remember { listOf(Screen.Home, Screen.Components, Screen.Settings) }
     
     CompositionLocalProvider(LocalThemeChange provides onThemeChange) {
@@ -32,6 +34,7 @@ fun AppNavigation(
             when (windowSize) {
                 WindowSize.COMPACT -> {
                     // Мобильная компоновка с нижней навигацией
+                    // Мобільна компоновка з нижньою навігацією
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
                         bottomBar = {
@@ -43,6 +46,7 @@ fun AppNavigation(
                 }
                 WindowSize.MEDIUM, WindowSize.EXPANDED -> {
                     // Десктопная компоновка с боковой навигацией
+                    // Десктопна компоновка з бічною навігацією
                     Row(modifier = Modifier.fillMaxSize()) {
                         SideNavigationRail(tabs = tabs)
                         CurrentTab()

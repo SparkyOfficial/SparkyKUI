@@ -39,10 +39,12 @@ import org.koin.compose.koinInject
 
 /**
  * Экран настроек приложения
+ * Екран налаштувань застосунку
  * Содержит переключатель темы и информацию о приложении
+ * Містить перемикач теми та інформацію про застосунок
  * 
- * @param viewModel ViewModel для управления настройками
- * @param onThemeChange Callback для изменения темы на уровне приложения
+ * @param viewModel ViewModel для управления настройками / ViewModel для керування налаштуваннями
+ * @param onThemeChange Callback для изменения темы на уровне приложения / Callback для зміни теми на рівні застосунку
  */
 @Composable
 fun SettingsScreen(
@@ -53,6 +55,7 @@ fun SettingsScreen(
     val windowSize = rememberWindowSize()
     
     // Оптимизация: используем remember для вычисления padding и spacing
+    // Оптимізація: використовуємо remember для обчислення padding та spacing
     val contentPadding = remember(windowSize) { windowSize.getContentPadding() }
     val spacing = remember(windowSize) { windowSize.getSpacing() }
     
@@ -66,7 +69,7 @@ fun SettingsScreen(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
-        // Заголовок
+        // Заголовок / Заголовок
         Text(
             text = "Настройки",
             style = MaterialTheme.typography.displayMedium,
@@ -84,6 +87,7 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(spacing * 2))
         
         // Секция настроек темы
+        // Секція налаштувань теми
         SettingsSection(
             title = "Внешний вид"
         ) {
@@ -99,6 +103,7 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(spacing))
         
         // Секция "О приложении"
+        // Секція "Про застосунок"
         SettingsSection(
             title = "О приложении"
         ) {
@@ -110,6 +115,7 @@ fun SettingsScreen(
         }
         
         // Обработчик ошибок
+        // Обробник помилок
         ErrorHandler(
             error = uiState.error,
             onDismiss = { viewModel.clearError() },
@@ -120,6 +126,7 @@ fun SettingsScreen(
 
 /**
  * Секция настроек с заголовком
+ * Секція налаштувань із заголовком
  */
 @Composable
 private fun SettingsSection(
@@ -153,6 +160,7 @@ private fun SettingsSection(
 
 /**
  * Элемент настройки темы с переключателем
+ * Елемент налаштування теми з перемикачем
  */
 @Composable
 private fun ThemeSettingItem(
@@ -161,6 +169,7 @@ private fun ThemeSettingItem(
     modifier: Modifier = Modifier
 ) {
     // Анимация цвета иконки
+    // Анімація кольору іконки
     val iconColor by animateColorAsState(
         targetValue = if (isDarkTheme) 
             MaterialTheme.colorScheme.primary 
@@ -209,6 +218,7 @@ private fun ThemeSettingItem(
         Spacer(modifier = Modifier.width(16.dp))
         
         // Переключатель с визуальной обратной связью
+        // Перемикач з візуальним зворотним зв'язком
         Switch(
             checked = isDarkTheme,
             onCheckedChange = { onThemeToggle() },
@@ -224,6 +234,7 @@ private fun ThemeSettingItem(
 
 /**
  * Элемент с информацией о приложении
+ * Елемент з інформацією про застосунок
  */
 @Composable
 private fun AboutAppItem(

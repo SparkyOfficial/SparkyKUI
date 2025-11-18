@@ -24,10 +24,11 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Индикатор загрузки с опциональным текстом
+ * Індикатор завантаження з опціональним текстом
  * 
- * @param modifier Модификатор для кастомизации
- * @param text Опциональный текст под индикатором
- * @param size Размер индикатора (Small, Medium, Large)
+ * @param modifier Модификатор для кастомизации / Модифікатор для кастомізації
+ * @param text Опциональный текст под индикатором / Опціональний текст під індикатором
+ * @param size Размер индикатора (Small, Medium, Large) / Розмір індикатора (Small, Medium, Large)
  */
 @Composable
 fun LoadingIndicator(
@@ -36,6 +37,7 @@ fun LoadingIndicator(
     size: LoadingIndicatorSize = LoadingIndicatorSize.Medium
 ) {
     // Создаем бесконечную анимацию для пульсации текста
+    // Створюємо нескінченну анімацію для пульсації тексту
     val infiniteTransition = rememberInfiniteTransition(label = "loading_transition")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 0.4f,
@@ -79,6 +81,7 @@ fun LoadingIndicator(
 
 /**
  * Размеры индикатора загрузки
+ * Розміри індикатора завантаження
  */
 enum class LoadingIndicatorSize(val dp: androidx.compose.ui.unit.Dp) {
     Small(24.dp),

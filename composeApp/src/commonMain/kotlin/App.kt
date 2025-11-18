@@ -10,9 +10,11 @@ import org.koin.compose.KoinContext
 @Composable
 fun App() {
     // Управление состоянием темы на уровне приложения
+    // Керування станом теми на рівні застосунку
     var isDarkTheme by remember { mutableStateOf(false) }
     
     // Предоставление Koin контекста для всего приложения
+    // Надання Koin контексту для всього застосунку
     KoinContext {
         AppTheme(darkTheme = isDarkTheme) {
             AppNavigation(

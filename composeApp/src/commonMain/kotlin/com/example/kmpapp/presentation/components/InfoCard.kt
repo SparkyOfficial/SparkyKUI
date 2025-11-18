@@ -33,12 +33,13 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Информационная карточка с иконкой, заголовком и описанием
+ * Інформаційна картка з іконкою, заголовком та описом
  * 
- * @param title Заголовок карточки
- * @param description Описание карточки
- * @param icon Иконка карточки
- * @param onClick Обработчик нажатия на карточку
- * @param modifier Модификатор для кастомизации
+ * @param title Заголовок карточки / Заголовок картки
+ * @param description Описание карточки / Опис картки
+ * @param icon Иконка карточки / Іконка картки
+ * @param onClick Обработчик нажатия на карточку / Обробник натискання на картку
+ * @param modifier Модификатор для кастомизации / Модифікатор для кастомізації
  */
 @Composable
 fun InfoCard(
@@ -49,15 +50,18 @@ fun InfoCard(
     modifier: Modifier = Modifier
 ) {
     // Создаем interaction source для отслеживания hover состояния
+    // Створюємо interaction source для відстеження hover стану
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
     
     // Оптимизация: используем remember для animationSpec
+    // Оптимізація: використовуємо remember для animationSpec
     val animationSpec = remember { tween<Float>(durationMillis = 200) }
     val dpAnimationSpec = remember { tween<androidx.compose.ui.unit.Dp>(durationMillis = 200) }
     val colorAnimationSpec = remember { tween<androidx.compose.ui.graphics.Color>(durationMillis = 200) }
     
     // Анимация elevation при hover
+    // Анімація elevation при hover
     val elevation by animateDpAsState(
         targetValue = if (isHovered) 8.dp else 2.dp,
         animationSpec = dpAnimationSpec,
@@ -65,6 +69,7 @@ fun InfoCard(
     )
     
     // Анимация масштаба при hover
+    // Анімація масштабу при hover
     val scale by animateFloatAsState(
         targetValue = if (isHovered) 1.02f else 1f,
         animationSpec = animationSpec,
@@ -72,6 +77,7 @@ fun InfoCard(
     )
     
     // Анимация цвета контейнера при hover
+    // Анімація кольору контейнера при hover
     val containerColor by animateColorAsState(
         targetValue = if (isHovered) 
             MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f)
@@ -106,6 +112,7 @@ fun InfoCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Иконка с анимацией вращения при hover
+            // Іконка з анімацією обертання при hover
             val iconRotation by animateFloatAsState(
                 targetValue = if (isHovered) 5f else 0f,
                 animationSpec = tween(durationMillis = 200),
@@ -122,6 +129,7 @@ fun InfoCard(
             Spacer(modifier = Modifier.width(16.dp))
             
             // Текстовый контент
+            // Текстовий контент
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.Center

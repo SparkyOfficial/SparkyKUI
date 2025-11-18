@@ -18,6 +18,7 @@ import com.example.kmpapp.presentation.components.InfoCard
 @Composable
 fun ComponentsScreen() {
     // Оптимизация: используем remember для contentPadding
+    // Оптимізація: використовуємо remember для contentPadding
     val contentPadding = remember { PaddingValues(16.dp) }
     val verticalSpacing = remember { 24.dp }
     
@@ -27,6 +28,7 @@ fun ComponentsScreen() {
         verticalArrangement = Arrangement.spacedBy(verticalSpacing)
     ) {
         // Оптимизация: используем key для стабильной идентификации секций
+        // Оптимізація: використовуємо key для стабільної ідентифікації секцій
         item(key = "header") {
             Text(
                 text = "Компоненты",
